@@ -22,7 +22,7 @@
 - receiver decrypts cipher AES key to get original AES 128 key using RSA algorithm (using receiver's private RSA key)
 - receiver decrypts cipher message using the decrypted AES 128 key using AES 128 algorithm
 - receiver hashes decrypted message using SHA 256
-- receiver verifies signature using Schnorr (using sender's public Schnoor key)
+- receiver verifies signature using Schnorr (using sender's public Schnorr key)
 
 ## output
 
