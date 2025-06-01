@@ -2,14 +2,14 @@ from math import floor, isqrt, sqrt
 from random import randrange, getrandbits
 from secrets import randbelow
 
-def rotate_left(n, d, max_bits=8):
+def rotate_left(n: int, d: int, max_bits=8):
     d %= max_bits 
     return ((n << d) | (n >> (max_bits - d))) & ((1 << max_bits) - 1)
 
 def right_rotate(n: int, d: int,max_bits=32):
     return ((n >> d) | (n << (max_bits - d))) & 0xFFFFFFFF
 
-def fast_mod_exp(b, exp, m):
+def fast_mod_exp(b: int, exp: int, m: int):
     res = 1
     while exp > 1:
         if exp & 1:
@@ -18,7 +18,7 @@ def fast_mod_exp(b, exp, m):
         exp >>= 1
     return (b * res) % m
 
-def inverse_mod(n, m):
+def inverse_mod(n: int, m: int):
     r0, r1 = m, n
     t0, t1 = 0, 1
 
@@ -61,7 +61,7 @@ def find_generator(p: int, q: int):
     raise ValueError("No generator found")
 
 # === PRIME NUMBER GENERATION === 
-def sieve(limit):
+def sieve(limit: int):
     is_prime = [True] * (limit + 1)
     is_prime[0:2] = [False, False]
     for i in range(2, int(limit**0.5) + 1):
@@ -70,7 +70,7 @@ def sieve(limit):
                 is_prime[j] = False
     return [i for i, val in enumerate(is_prime) if val]
 
-def is_probable_prime(n, k=5):  # Miller-Rabin
+def is_probable_prime(n: int, k: int = 5):  # Miller-Rabin
     if n < 2:
         return False
     for p in [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]:
@@ -95,7 +95,7 @@ def is_probable_prime(n, k=5):  # Miller-Rabin
 
 small_primes = sieve(10**7)
 
-def is_prime(n):
+def is_prime(n: int):
     limit = int(n**0.5) + 1
     for p in small_primes:
         if p > limit:
@@ -104,7 +104,7 @@ def is_prime(n):
             return False
     return is_probable_prime(n)
 
-def generate_large_primes(bit_length, count) -> list[int]:
+def generate_large_primes(bit_length: int, count: int) -> list[int]:
     result = []
     while len(result) < count:
         n = getrandbits(bit_length) | 1  # ensure odd
@@ -215,7 +215,7 @@ def generate_rounded_values():
     return roundedValues
 
 # === SCHNORR UTILS ===
-def generate_schnorr_pq(q_bits=16, p_bits=32, max_attempts=10000):
+def generate_schnorr_pq(q_bits: int = 16, p_bits: int = 32, max_attempts: int = 10000):
     while True:
         q = randrange(2**(q_bits-1), 2**q_bits)
         if not is_prime(q):
