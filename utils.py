@@ -227,9 +227,6 @@ def generate_schnorr_pq(q_bits: int = 16, p_bits: int = 32, max_attempts: int = 
             p = k * q + 1
             if is_prime(p):
                 return p, q
-from math import floor, isqrt, sqrt
-from random import randrange, getrandbits
-from secrets import randbelow
 
 def rotate_left(n: int, d: int, max_bits=8):
     d %= max_bits 
