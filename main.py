@@ -131,7 +131,7 @@ while True:
     try:
         input_path = filedialog.askopenfilename(
             title="Select Image",
-            filetypes=[("PNG images", "*.png"), ("BMP images", "*.bmp"), ("JPG images", "*.jpg")]
+            filetypes=[("PNG images", "*.png"), ("BMP images", "*.bmp"), ("JPG images", "*.jpg"), ("JPEG images", "*.jpeg")]
         )
         print_step(["Alice Hides Data Packet inside Image (input.png)"])
 
