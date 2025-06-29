@@ -1,11 +1,12 @@
 from utils import generate_aes_sbox, gf_mul
 
 class AES_128:
+    __Nb = 4  # Block size (4 words = 16 bytes)
+    __Nk = 4  # Key length (4 words = 16 bytes)
+    __Nr = 10 # Number of rounds
+    __forwardSBox, __inverseSBox = generate_aes_sbox()
+    
     def __init__(self, key: str):        
-        self.__Nb = 4  # Block size (4 words = 16 bytes)
-        self.__Nk = 4  # Key length (4 words = 16 bytes)
-        self.__Nr = 10 # Number of rounds
-        self.__forwardSBox, self.__inverseSBox = generate_aes_sbox()
         self.__roundKeys = self.__key_scheduling([ord(c) for c in key])
 
     def __key_scheduling(self, key_bytes):

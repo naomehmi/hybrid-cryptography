@@ -105,7 +105,7 @@ while True:
         print_step([f"Message Digest: {digest}"])
         print_step()
 
-        print_step(["Alice signs the digest using Her Private Schnorr"])
+        print_step(["Alice signs the digest using her private Schnorr key"])
         digital_signature = alice.sign_message(digest)
         print_step()
         print_step([f"Digest: {digest}"])
