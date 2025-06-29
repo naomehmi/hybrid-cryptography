@@ -2,7 +2,7 @@ from utils import inverse_mod, fast_mod_exp, generate_valid_d, generate_large_pr
 
 class RSA:
     def key_gen(self):
-        p, q = generate_large_primes(31, 2)
+        p, q = generate_large_primes(32, 2)
         n = p * q
         totient_n = (p-1) * (q-1)
         d = generate_valid_d(p, q, totient_n)
