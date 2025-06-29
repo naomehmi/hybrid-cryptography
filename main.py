@@ -54,10 +54,7 @@ while True:
             print_step(["Message is required"])
             continue
 
-        if len(message) > 16:
-            message = message[:16]
-
-        message = message.zfill(16)
+        message = message[:16].zfill(16)
         
         alice = Person()
         bob = Person()
@@ -79,7 +76,7 @@ while True:
         if (aes_key == ''):
             aes_key = ''.join([LETTERS_AND_NUMBERS[floor(random() * TOTAL_CHARS)] for _ in range(16)])
         
-        aes_key = aes_key.zfill(16)
+        aes_key = aes_key[:16].zfill(16)
         
         print_step(["Alice encrypts message using AES128"])
         alice_aes_service = AES_128(aes_key)
