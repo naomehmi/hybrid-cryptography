@@ -39,36 +39,36 @@ class AES_128:
         return round_keys
 
     def encrypt(self, plaintext: str):
-        stateArray = [ [ 0 for _ in range(4) ] for _ in range(4) ]
+        state_array = [ [ 0 for _ in range(4) ] for _ in range(4) ]
         
         # put plaintext into matrix
         for i in range(16):
             row = i % 4
             col = i // 4
-            stateArray[col][row] = ord(plaintext[i])
+            state_array[col][row] = ord(plaintext[i])
 
         # add round key
         for i in range(4):
             for j in range(4):
-                stateArray[i][j] ^= self.__roundKeys[0][i][j]
+                state_array[i][j] ^= self.__roundKeys[0][i][j]
 
         for i in range(1, self.__Nr + 1):
             # sub bytes
             for j in range(4):
                 for k in range(4):
-                    stateArray[j][k] = self.__forwardSBox[stateArray[j][k]]
+                    state_array[j][k] = self.__forwardSBox[state_array[j][k]]
             
             # shift rows
             for r in range(1, 4):
-                row = [stateArray[c][r] for c in range(4)]
+                row = [state_array[c][r] for c in range(4)]
                 row = row[r:] + row[:r]
                 for c in range(4):
-                    stateArray[c][r] = row[c]
+                    state_array[c][r] = row[c]
             
             # mix columns
             if (i != self.__Nr):
                 for col in range(4):
-                    a = stateArray[col]
+                    a = state_array[col]
                     temp = [
                         gf_mul(0x02, a[0]) ^ gf_mul(0x03, a[1]) ^ a[2] ^ a[3],
                         a[0] ^ gf_mul(0x02, a[1]) ^ gf_mul(0x03, a[2]) ^ a[3],
@@ -76,50 +76,50 @@ class AES_128:
                         gf_mul(0x03, a[0]) ^ a[1] ^ a[2] ^ gf_mul(0x02, a[3]),
                     ]
                     for x in range(4):
-                        stateArray[col][x] = temp[x]
+                        state_array[col][x] = temp[x]
     
             # add round key
             for j in range(4):
                 for k in range(4):
-                    stateArray[j][k] ^= self.__roundKeys[i][j][k]
+                    state_array[j][k] ^= self.__roundKeys[i][j][k]
             
-        return ''.join(f'{stateArray[c][r]:02x}' for c in range(4) for r in range(4))
+        return ''.join(f'{state_array[c][r]:02x}' for c in range(4) for r in range(4))
     
     def decrypt(self, cipherText: str):
-        stateArray = [ [ 0 for _ in range(4) ] for _ in range(4) ]
+        state_array = [ [ 0 for _ in range(4) ] for _ in range(4) ]
 
         for i in range(0, 16 * 2, 2):
             row = (i // 2) % 4
             col = (i // 2) // 4
-            stateArray[col][row] = int(cipherText[i:i+2], 16)
+            state_array[col][row] = int(cipherText[i:i+2], 16)
 
         # add round key
         for i in range(4):
             for j in range(4):
-                stateArray[i][j] ^= self.__roundKeys[self.__Nr][i][j]
+                state_array[i][j] ^= self.__roundKeys[self.__Nr][i][j]
 
         for i in range(self.__Nr - 1, -1, -1):
             # inv shift rows
             for r in range (1, 4):
-                row = [stateArray[c][r] for c in range(4)]
+                row = [state_array[c][r] for c in range(4)]
                 row = row[-r:] + row[:-r]
                 for c in range(4):
-                    stateArray[c][r] = row[c]
+                    state_array[c][r] = row[c]
 
             # inv sub bytes
             for j in range(4):
                 for k in range(4):
-                    stateArray[j][k] = self.__inverseSBox[stateArray[j][k]]
+                    state_array[j][k] = self.__inverseSBox[state_array[j][k]]
 
             # add round key
             for j in range(4):
                 for k in range(4):
-                    stateArray[j][k] ^= self.__roundKeys[i][j][k]
+                    state_array[j][k] ^= self.__roundKeys[i][j][k]
 
             # inv mix columns
             if (i != 0):
                 for col in range(4):
-                    a = stateArray[col]
+                    a = state_array[col]
                     temp = [
                         gf_mul(0x0e, a[0]) ^ gf_mul(0x0b, a[1]) ^ gf_mul(0x0d, a[2]) ^ gf_mul(0x09, a[3]),
                         gf_mul(0x09, a[0]) ^ gf_mul(0x0e, a[1]) ^ gf_mul(0x0b, a[2]) ^ gf_mul(0x0d, a[3]),
@@ -127,6 +127,6 @@ class AES_128:
                         gf_mul(0x0b, a[0]) ^ gf_mul(0x0d, a[1]) ^ gf_mul(0x09, a[2]) ^ gf_mul(0x0e, a[3]),
                     ]
                     for x in range(4):
-                        stateArray[col][x] = temp[x]
+                        state_array[col][x] = temp[x]
 
-        return ''.join(f'{chr(stateArray[c][r])}' for c in range(4) for r in range(4))
+        return ''.join(f'{chr(state_array[c][r])}' for c in range(4) for r in range(4))
