@@ -53,9 +53,6 @@ while True:
         if (message == ''):
             print_step(["Message is required"])
             continue
-    
-        if ('|' in message):
-            print_step(["| character not allowed"])
 
         message = message[:16].zfill(16)
         
@@ -78,9 +75,6 @@ while True:
 
         if (aes_key == ''):
             aes_key = ''.join([LETTERS_AND_NUMBERS[floor(random() * TOTAL_CHARS)] for _ in range(16)])
-        
-        if ('|' in aes_key):
-            print_step(["| character not allowed"])
         
         aes_key = aes_key[:16].zfill(16)
         
