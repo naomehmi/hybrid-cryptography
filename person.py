@@ -48,36 +48,3 @@ class Person:
     def decrypt_aes_key(self, aes_encrypted_key: str) -> str:
         aes_decrypted_key = RSA.decrypt(aes_encrypted_key, self.__rsa_private_key)
         return aes_decrypted_key
-    
-    def send_data_packet(self, aes_key: str, message: str, receiver: "Person"):
-        rsa_public_keys = receiver.get_rsa_public_keys()
-        
-        aes_service = AES_128(aes_key)
-        sha_service = SHA_256_custom()
-
-        cipher_text = aes_service.encrypt(message)
-        cipher_key = RSA.encrypt(aes_key, rsa_public_keys)
-        
-        digest = sha_service.hash(message)
-        digital_signature = Schnorr.sign(digest, self.__schnorr_private_key, self.__schnorr_public_key)
-
-        packet = f"{cipher_key}|{cipher_text}|{digital_signature}"
-        return packet
-    
-    def receive_data_packet(self, data_packet: str, signee: "Person"):
-        schnorr_public_keys = signee.get_schnorr_public_keys()
-
-        cipher_key, cipher_text, digital_signature = data_packet.split('|')
-        aes_decrypted_key = RSA.decrypt(cipher_key, self.__rsa_private_key)
-        
-        aes_service = AES_128(aes_decrypted_key)
-        sha_service = SHA_256_custom()
-        
-        message = aes_service.decrypt(cipher_text)
-        hashed_message = sha_service.hash(message)
-        verify = Schnorr.verify(hashed_message, digital_signature, schnorr_public_keys)
-
-        if (verify):
-            return 'valid'
-        
-        return 'invalid'
