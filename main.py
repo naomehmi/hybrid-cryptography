@@ -146,7 +146,10 @@ while True:
         print_step([""], ["Bob Extracts the Data from output.png"])
         decoded_data = extract_data_from_image("output.png")
         print_step()
-        print_step([""], [f"Extracted Data: {decoded_data}"])
+        print_step([""], [f"Extracted Data: {decoded_data}"])\
+        
+        encrypted_key, encrypted_message, digital_signature = decoded_data.split('|')
+        digital_signature = digital_signature[:-1] # Remove EOF market
 
         print_step(["", "", ""], [
             f"Encrypted Key: {encrypted_key}",
