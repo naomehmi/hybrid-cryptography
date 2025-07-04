@@ -43,16 +43,6 @@ def gcd(a: int, b: int):
     return a
   return gcd(b, a % b)
 
-def factorize(n: int):
-    factors = set()
-    for i in range(2, isqrt(n) + 1):
-        while n % i == 0:
-            factors.add(i)
-            n //= i
-    if n > 1:
-        factors.add(n)
-    return factors
-
 def find_generator(p: int, q: int):
     for h in range(2, p):
         g = fast_mod_exp(h, (p - 1) // q, p)
