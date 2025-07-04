@@ -1,5 +1,7 @@
 # cryptography hybrid assignment
 
+run `main.py`
+
 ## requirement
 
 - AES 128 encryption and decryption
