@@ -1,4 +1,4 @@
-from math import floor, isqrt, sqrt
+from math import floor, sqrt
 from random import randrange, getrandbits
 from secrets import randbelow
 
